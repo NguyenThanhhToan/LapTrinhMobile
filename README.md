@@ -11,6 +11,7 @@ This repository contains weekly programming exercises for the Mobile Device Prog
 
 ## Structure
 - All exercises are organized in the `lib` folder.
+- Description document placed in doc file `document`
 
 ## Notes
 Feel free to explore and use the code for reference and practice!
