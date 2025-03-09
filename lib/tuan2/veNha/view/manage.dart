@@ -1,7 +1,7 @@
 // views.dart
 import 'package:flutter/material.dart';
-import 'view_book.dart';
-import 'view_employee.dart';
+import 'list_book.dart';
+import 'list_employee.dart';
 import '../models.dart';
 import '../view_model.dart';
 
@@ -47,8 +47,18 @@ class ManageScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  ),
                   onPressed: () {},
-                  child: const Text('Đổi'),
+                  child: const Text(
+                    'Đổi',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -62,49 +72,64 @@ class ManageScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              color: Colors.grey[200],
-              child: ListView.builder(
-                itemCount: books.length,
-                itemBuilder: (context, index) {
-                  final book = books[index];
-                  final isSelected = selectedBooks.contains(book.id);
-                  return GestureDetector(
-                    onTap: () {
-                      toggleBookSelection(book.id);
-                      (context as Element).reassemble();
-                    },
-                    child: Card(
-                      color: isSelected ? Colors.blue[100] : Colors.white,
-                      child: ListTile(
-                        title: Text(book.title),
-                        subtitle: Text('${book.author} - ${book.category}'),
-                        
+            child: Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListView.builder(
+                  itemCount: books.length,
+                  itemBuilder: (context, index) {
+                    final book = books[index];
+                    final isSelected = selectedBooks.contains(book.id);
+                    return GestureDetector(
+                      onTap: () {  
+                        toggleBookSelection(book.id);
+                        (context as Element).reassemble();
+                      },
+                      child: Card(
+                        color: isSelected ? Colors.blue[100] : Colors.white,
+                        child: ListTile(
+                          title: Text(book.title),
+                          subtitle: Text('${book.author} - ${book.category}'),
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 20.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              ),
               onPressed: () {
                 final message = borrowSelectedBooks();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(message)),
                 );
               },
-              child: const Text('Thêm sách'),
+              child: const Text(
+                'Thêm sách',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Quản lý'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'DS sách'),
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Nhân viên'),
         ],
