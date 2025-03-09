@@ -5,8 +5,15 @@ import 'list_employee.dart';
 import '../models.dart';
 import '../view_model.dart';
 
-class ManageScreen extends StatelessWidget {
+class ManageScreen extends StatefulWidget {
   const ManageScreen({super.key});
+
+  @override
+  State<ManageScreen> createState() => _ManageScreenState();
+}
+
+class _ManageScreenState extends State<ManageScreen> {
+  String? selectedEmployee;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +45,36 @@ class ManageScreen extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Tên nhân viên',
-                      border: OutlineInputBorder(),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ListView.builder(
+                            itemCount: employees.length,
+                            itemBuilder: (context, index) {
+                              final employee = employees[index];
+                              return ListTile(
+                                title: Text(employee.name),
+                                onTap: () {
+                                  setState(() {
+                                    selectedEmployee = employee.name;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(selectedEmployee ?? 'Chọn nhân viên'),
                     ),
                   ),
                 ),
@@ -104,7 +137,7 @@ class ManageScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -129,7 +162,7 @@ class ManageScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Quản lý'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.book), label: 'DS sách'),
           BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Nhân viên'),
         ],
